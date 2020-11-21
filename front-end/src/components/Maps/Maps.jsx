@@ -7,11 +7,6 @@ import 'leaflet/dist/leaflet.css';
 
 
 L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.5.0/dist/images/";
-// L.Icon.Default.mergeOptions({
-//   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-//   iconUrl: require('leaflet/dist/images/marker-icon.png'),
-//   shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-// });
 
 class Maps extends React.Component {
 
@@ -71,7 +66,6 @@ class Maps extends React.Component {
   // }
 
   render() {
-    console.log(this.props)
     return (
       this.renderDefault()       
     );
