@@ -24,9 +24,6 @@ class App extends React.Component {
       const target = event.target;
       const value = target.type === 'checkbox' ? target.checked : target.value;
       const name = target.name;
-      console.log(target)
-      console.log(value)
-      console.log(name)
       this.setState({
         [name]: value
       });
@@ -89,69 +86,14 @@ class App extends React.Component {
       }
   
     }
-  
-
-  // TODO: getImageInfo and getImageDiv should be moved to Maps.jsx later
-  getImageInfo = () => {
-    if (this.state.img_info.success === true){
-        if(this.state.img_info.probabilistic === true){
-            // then img_info only contains addresses and a message
-            // do this later
-            const coord = 
-            {
-              lat: this.state.img_info.lat,
-              lon: this.state.img_info.lon,
-              name: this.state.img_info.display_name
-            }
-            this.setState({
-              locations: [coord]
-            })
-            return (
-            <p className="Main-Image-Info">{this.state.img_info.message}</p>
-            )
-        }
-        else {
-            // then img_info contains a zipcode
-            const coord = 
-            {
-              lat: this.state.img_info.lat,
-              lon: this.state.img_info.lon,
-              name: this.state.img_info.display_name
-            }
-            this.setState({
-              locations: [coord]
-            })
-            return 
-            (
-            <p className="Main-Image-Info">{this.state.img_info.address.zipcode}</p>
-            )
-        }
-    } else {
-        return 
-            (
-            <p className="Main-Image-Info">{this.state.img_info.error}</p>
-            )
-    }
-  }
-
-  getImageDiv = () => {
-      return (
-          <section id="Main-Image-Section">
-              <img src="data:image/jpeg;base64,{this.state.base64img}" alt="banner-image" id="Main-Image-Section-Image"/>
-              <article>
-
-              </article>
-        </section>
-      )
-  }
 
   
   render() {
     return (
         <div className="App">
           <Maps
-            getImageDiv = {this.getImageDiv}
-            locations = {this.locations}
+            base64img = {this.state.base64img}
+            locations = {this.state.img_info}
           />
           <section id="submit-image-section">
             <form action ={url} method ="post" onSubmit={this.handleSubmit} noValidate>
