@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
-import Footer from './components/Footer/Footer'
+import Footer from './components/Footer/Footer';
+import Maps from './components/Maps/Maps';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           Learn React
         </a>
       </header>
+      <Maps/>
       <Footer/>
     </div>
   );
