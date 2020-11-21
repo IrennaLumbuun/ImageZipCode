@@ -7,31 +7,27 @@ from functools import partial
 import geopy
 import logging
 
-logging.basicConfig(format='%(levelname)s: {%(pathname)s:%(lineno)d} \n%(message)s', level=logging.NOTSET)
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 geopy_helper = geopy.Nominatim(user_agent='image-handler')
 
 
-def is_jpeg(b64: str) -> bool:
-    return True
+def convert_b64_to_img(b64:str):
+    logger.info('convert_b64_to_img STARTED')
+    try:
+        img = base64.b64decode(b64)
+        buf = io.BytesIO(img)
+        pil_img = Image.open(buf)
+        return pil_img
+    except Exception as e:
+        logger.error(get_exception_message(e))
+        raise ValidationError(get_exception_message(e))
 
 
-def handle_image(b64: str):
-    logger.info('handle_image STARTED')
-    # Convert to Pillow image
-    img = base64.b64decode(b64)
-    buf = io.BytesIO(img)
-    pil_img = Image.open(buf)
-    address = get_zipcode(pil_img)
-    if address == None:
-        logger.info('Fail to extract address')
-        # do fallback
-        pass
-    else:
-        logger.info(f'Address found. Returning {address}')
-        # TODO: Jsonify address before returning
-        return address
-
+def is_jpeg(pil_img) -> bool:
+    if pil_img.format != 'JPEG':
+        logger.error('Not a JPEG')
+        raise ValidationError('Image is not a JPEG')
 
 
 # source code: https://developer.here.com/blog/getting-started-with-geocoding-exif-image-metadata-in-python3
@@ -43,7 +39,12 @@ def get_zipcode(pil_img) -> int:
         coords = get_coordinates(geotagging)
         geocode = partial(geopy_helper.reverse, language='eng')
         address = geocode(f'{coords[0]} {coords[1]}')
-        return address.raw
+
+        success_dict = {
+            "success": True,
+            "probabilistic": False
+        }
+        return {**success_dict, **address.raw}
     except UnprocessableEntityError as err:
         logger.info("Unable to get zipcode")
         return None
@@ -110,7 +111,6 @@ def get_decimal_from_dms(dms, ref):
     minutes = dms[1] / 60.0
     seconds = dms[2] / 3600.0
 
-    print(degrees, minutes, seconds)
     if ref in ['S', 'W']:
         degrees = -degrees
         minutes = -minutes
