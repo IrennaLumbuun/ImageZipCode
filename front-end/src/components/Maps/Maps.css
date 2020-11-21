@@ -1,0 +1,5 @@
+@import url("~leaflet/dist/leaflet.css");
+
+.map {
+    height: 76vh;
+}
