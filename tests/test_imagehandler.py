@@ -47,7 +47,7 @@ def test_get_zipcode(client):
     # Input 2: Image with no exif metada
     response = get_zipcode(client, base64s.get('no_exif'))
     response_json = get_response_json(response.data)
-    assert response_json == None
+    assert response_json.get('error', None) == "Can not find location metadata."
 
     # Input 3: Not a JPEG
     response = get_zipcode(client, base64s.get('not_jpeg'))
