@@ -1,12 +1,17 @@
 import React from "react";
 import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import './Maps.css';
 import 'leaflet/dist/leaflet.css';
+import PropTypes from 'prop-types';
 
 L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.5.0/dist/images/";
 
 class Maps extends React.Component {
+
+  static propTypes = {
+    locations: PropTypes.array,
+  }
 
   constructor(props) {
     super(props);
@@ -19,8 +24,21 @@ class Maps extends React.Component {
         lon: -118.50005,
         name: "Enterprise Vision Technology"
       },
-      zoom: 10
+      zoom: 10,
+      infos:[]
     }
+  }
+  
+  componentWillMount() {
+    this.setState({
+      infos: this.props.locations
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      infos: nextProps.locations
+    });
   }
 
   getImageInfo = (item) => {
@@ -59,30 +77,31 @@ class Maps extends React.Component {
   renderDefault = () => {
     var location = [this.state.default_location.lat, this.state.default_location.lon];
     return (
-      <MapContainer className="map" zoom={this.state.zoom} center={location}>
+      <Map className="map" zoom={this.state.zoom} center={location}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-      </MapContainer>
+      </Map>
     );
   }
 
   renderLocation() {
     return (
-      <MapContainer className="map" zoom={10} center={[this.props.locations[0].lat, this.props.locations[0].lon]}>
+      <Map className="map" zoom={10} center={[this.state.infos[0].lat, this.state.infos[0].lon]}>
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {this.showMarker()}
-      </MapContainer>
+      </Map>
     );
   }
 
   render() {
     return (
-      this.props.locations.length === 0 ? this.renderDefault() : this.renderLocation()        
+      this.state.infos.length === 0 ? this.renderDefault() : this.renderLocation()        
+      //this.renderDefault()
     );
   }
 };

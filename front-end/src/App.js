@@ -13,7 +13,8 @@ class App extends React.Component {
           allow_estimate: false,
           base64img: '',
           img_info: [],
-          error_message: ''
+          error_message: '',
+          pass_base64: ''
       };
 
     this.handleChange = this.handleChange.bind(this);
@@ -54,29 +55,30 @@ class App extends React.Component {
                   let coords = []
                   data.address.map(coord => {
                     const location_dict  = {
-                      "lat": coord.lat,
-                      "lon": coord.lon,
+                      "lat": parseFloat(coord.lat),
+                      "lon": parseFloat(coord.lon),
                       "name": coord.display_name
                     }
                     coords.push(location_dict)
                   })
                   this.setState({
-                    img_info: coords
+                    img_info: coords,
+                    pass_base64:this.state.base64img
                   })
                 }
                 else {
                   // An actual location is retrieved
                   this.setState({
                     img_info: [{
-                      "lat": data.lat,
-                      "lon": data.lon,
+                      "lat": parseFloat(data.lat),
+                      "lon": parseFloat(data.lon),
                       "name": data.display_name,
                       "zipcode": data.address.postcode
-                    }]
-                  }, console.log(this.state.img_info))
+                    }],
+                    pass_base64:this.state.base64img
+                  })
                 }
               }
-              console.log(this.state.img_info)
           })
           .catch((response) => {
               //handle error
@@ -92,7 +94,7 @@ class App extends React.Component {
     return (
         <div className="App">
           <Maps
-            base64img = {this.state.base64img}
+            base64img = {this.state.pass_base64}
             locations = {this.state.img_info}
           />
           <section id="submit-image-section">
