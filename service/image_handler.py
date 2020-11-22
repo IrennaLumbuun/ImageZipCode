@@ -47,7 +47,7 @@ def get_zipcode(pil_img) -> int:
         return {**success_dict, **address.raw}
     except UnprocessableEntityError as err:
         logger.info("Unable to get zipcode")
-        return None
+        return {'error': "Can not find location metadata."}
         
 
 '''

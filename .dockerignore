@@ -1,0 +1,31 @@
+.DS_Store
+node_modules
+/dist
+package-lock.json
+__pycache__
+
+
+# local env files
+.env.local
+.env.*.local
+env/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Unit test
+.eggs
+EVT_Project.egg-info
+front-end/

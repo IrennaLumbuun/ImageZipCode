@@ -19,7 +19,8 @@ setuptools.setup(
         'flask-cors',
         'geopy',
         'Pillow',
-        'urllib3'
+        'price-parser',
+        'pytesseract'
     ],
     setup_requires=[
         'pytest-runner',
