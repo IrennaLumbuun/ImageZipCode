@@ -24,3 +24,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Unit test
+.eggs
+EVT_Project.egg-info
