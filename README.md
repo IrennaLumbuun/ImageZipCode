@@ -2,8 +2,8 @@
 
 # Try it yourself!
 Go to https://evt-frontend.herokuapp.com/ 
-(please allow up to 15 seconds when the page first load. Heroku free tier makes the app *goes to sleep* after 30 minutes of no traffic.
-That being said, the first get zipcode request might take up to 15 seconds as well; to *wake up* the back-end server.)
+(please allow up to 30 seconds when the page first load. Heroku free tier makes the app *goes to sleep* after 30 minutes of no traffic.
+That being said, the first get zipcode request might take up to 30 seconds as well; to *wake up* the back-end server.)
 
 # Run this on local
 1. Clone this repository
