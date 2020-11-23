@@ -5,7 +5,7 @@ import InfoLogs from './components/Logs/Logs';
 import React from "react";
 import axios from 'axios';
 
-const url = "https://evtproject-backend.herokuapp.com/post"
+const url = "http://127.0.0.1:8081/post"
 
 class App extends React.Component {
   constructor(props) {
