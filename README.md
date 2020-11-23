@@ -8,7 +8,7 @@ That being said, the first get zipcode request might take up to 30 seconds as we
 # Run this on local
 1. Clone this repository
 2. Run `pip3 install -r requirements.txt`
-3. Run `flask run`
+3. Run `flask run -h localhost -p 8081`
 4. cd front-end
 5. Run `yarn install`
 6. Run `yarn start`
