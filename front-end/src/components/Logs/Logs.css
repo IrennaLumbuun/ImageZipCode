@@ -1,0 +1,7 @@
+ul#log-list-container {
+    margin: 1rem;
+}
+
+p.log-info {
+    align-self: center;
+}

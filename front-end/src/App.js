@@ -1,6 +1,7 @@
 import './App.css';
 import Footer from './components/Footer/Footer';
 import Maps from './components/Maps/Maps';
+import InfoLogs from './components/Logs/Logs';
 import React from "react";
 import axios from 'axios';
 
@@ -14,7 +15,8 @@ class App extends React.Component {
           base64img: '',
           img_info: [],
           error_message: '',
-          pass_base64: ''
+          pass_base64: [],
+          logs:[]
       };
 
     this.handleChange = this.handleChange.bind(this);
@@ -32,8 +34,14 @@ class App extends React.Component {
   
     handleSubmit = (event) => {
       event.preventDefault();
+      this.setState({
+        error_message: ''
+      })
+
       if (this.state.base64img === ''){
-        alert("Make sure the input box is not empty!")
+        this.setState({
+          error_message: 'Make sure the input box is not empty'
+        })
       }
       else{
         let bodyFormData = {
@@ -63,27 +71,37 @@ class App extends React.Component {
                   })
                   this.setState({
                     img_info: coords,
-                    pass_base64:this.state.base64img
+                    pass_base64:this.state.pass_base64.concat(this.state.base64img),
+                    logs: this.state.logs.concat(coords)
                   })
                 }
                 else {
                   // An actual location is retrieved
+                  const img_info = {
+                    "lat": parseFloat(data.lat),
+                    "lon": parseFloat(data.lon),
+                    "name": data.display_name,
+                    "zipcode": data.address.postcode
+                  }
                   this.setState({
-                    img_info: [{
-                      "lat": parseFloat(data.lat),
-                      "lon": parseFloat(data.lon),
-                      "name": data.display_name,
-                      "zipcode": data.address.postcode
-                    }],
-                    pass_base64:this.state.base64img
-                  })
-                }
+                    img_info: [img_info],
+                    pass_base64:this.state.pass_base64.concat((this.state.base64img)),
+                    logs: this.state.logs.concat(img_info)
+                })
               }
+            } 
+              else {
+                this.setState({
+                  error_message: data.error
+                })
+              }
+              console.log(this.state) //debug
           })
           .catch((response) => {
               //handle error
-              console.log(response)
-              alert("Error:", response);
+              this.setState({
+                error_message: response.message
+              })
           });
       }
   
@@ -93,32 +111,40 @@ class App extends React.Component {
   render() {
     return (
         <div className="App">
-          <Maps
-            base64img = {this.state.pass_base64}
-            locations = {this.state.img_info}
-          />
-          <section id="submit-image-section">
+          <h1 className="text-center mt-3">Get Image Location</h1>
+          {/* TEMPORARILY DISABLED - until we figure out what's wrong
+          <Maps/>
+          */}
+          <section id="submit-image-section" className="container">
             <form action ={url} method ="post" onSubmit={this.handleSubmit} noValidate>
-            <label className="container"> Get estimated locaton if fail to obtain zip code
-              <input 
-                  type="checkbox" 
-                  name="allow_estimate"
-                  checked={this.state.allow_estimate}
-                  onChange={this.handleChange.bind(this)}
-                  />
-            </label>
-            <div className="base64-string">
-              <label htmlFor="base64-string">Base64:</label>
-              <input
+              {/* TEMPORARILY DISABLED - until we developed the backend functionality for this
+              <label className="container"> Get estimated locaton if fail to obtain zip code
+                <input 
+                    type="checkbox" 
+                    name="allow_estimate"
+                    checked={this.state.allow_estimate}
+                    onChange={this.handleChange.bind(this)}
+                    />
+                </label>*/}
+            <div className="base64-string form-group">
+              <label for="base64-string" className="text-left">Base64: </label>
+              <textarea
+                  id="base64-string"
                   placeholder="base64 string"
                   type="text"
                   name="base64img"
+                  className="form-control"
                   onChange={this.handleChange}
                   noValidate
               />
             </div>
-            <button type="submit">Show Location</button>
+            <p className="text-danger text-center">{this.state.error_message}</p>
+            <button type="submit" className="btn btn-outline-dark">Show Location</button>
             </form>
+            <h3 className="text-left mt-4">Logs:</h3>
+            <InfoLogs 
+                logs={this.state.logs}
+                base64s={this.state.pass_base64}/>
           </section>
           <Footer/>
         </div>

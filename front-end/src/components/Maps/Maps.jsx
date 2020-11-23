@@ -102,7 +102,8 @@ class Maps extends React.Component {
     return (
       //this.state.infos.length === 0 ? this.renderDefault() : this.renderLocation()        
       //this.renderDefault()
-      <p>{JSON.stringify(this.state.infos)}</p>
+      null
+      //<p>{JSON.stringify(this.state.infos)}</p>
     );
   }
 };
