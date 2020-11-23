@@ -111,11 +111,11 @@ class App extends React.Component {
   render() {
     return (
         <div className="App">
-          <h1 className="text-center mt-3">Get Image Location</h1>
-          {/* TEMPORARILY DISABLED - until we figure out what's wrong
-          <Maps/>
-          */}
-          <section id="submit-image-section" className="container">
+            <section id="submit-image-section" className="container">
+            <h1 className="text-center mt-3">Get Image Location</h1>
+            {/* TEMPORARILY DISABLED - until we figure out what's wrong
+            <Maps/>
+            */}
             <form action ={url} method ="post" onSubmit={this.handleSubmit} noValidate>
               {/* TEMPORARILY DISABLED - until we developed the backend functionality for this
               <label className="container"> Get estimated locaton if fail to obtain zip code
